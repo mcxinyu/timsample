@@ -1,0 +1,13 @@
+.idea/
+.gradle/
+/build
+/ui/src/androidTest/
+/ui/src/test/
+/tlslibrary/src/androidTest/
+/tlslibrary/src/test/
+/sdk/src/androidTest/
+/sdk/src/test/
+/presentation/src/androidTest/
+/presentation/src/test/
+/app/src/androidTest/
+/app/src/test/
