@@ -109,6 +109,9 @@ public class TextMessage extends Message {
     @Override
     public void showMessage(ChatAdapter.ViewHolder viewHolder, Context context) {
         clearView(viewHolder);
+
+        if (checkRevoke(viewHolder)) return;
+
         boolean hasText = false;
         TextView tv = new TextView(MyApplication.getContext());
         tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
@@ -134,6 +137,9 @@ public class TextMessage extends Message {
      */
     @Override
     public String getSummary() {
+        String str = getRevokeSummary();
+        if (str != null) return str;
+
         StringBuilder result = new StringBuilder();
         for (int i = 0; i < message.getElementCount(); ++i) {
             switch (message.getElement(i).getType()) {

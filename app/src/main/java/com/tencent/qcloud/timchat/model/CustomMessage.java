@@ -1,7 +1,6 @@
 package com.tencent.qcloud.timchat.model;
 
 import android.content.Context;
-import android.util.JsonReader;
 import android.util.Log;
 
 import com.tencent.TIMCustomElem;
@@ -11,11 +10,7 @@ import com.tencent.qcloud.timchat.adapters.ChatAdapter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
 
 /**
  * 自定义消息
@@ -96,7 +91,6 @@ public class CustomMessage extends Message {
      */
     @Override
     public void showMessage(ChatAdapter.ViewHolder viewHolder, Context context) {
-
     }
 
     /**

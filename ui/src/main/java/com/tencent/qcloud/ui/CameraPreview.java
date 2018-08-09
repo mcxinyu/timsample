@@ -6,9 +6,7 @@ import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 
-
 import java.io.IOException;
-import java.util.List;
 
 
 /**

@@ -2,6 +2,7 @@ package com.tencent.qcloud.presentation.viewfeatures;
 
 import com.tencent.TIMMessage;
 import com.tencent.TIMMessageDraft;
+import com.tencent.TIMMessageLocator;
 
 import java.util.List;
 
@@ -19,6 +20,12 @@ public interface ChatView extends MvpView {
      * 显示消息
      */
     void showMessage(List<TIMMessage> messages);
+
+    /**
+     * 显示撤回消息
+     */
+    void showRevokeMessage(TIMMessageLocator timMessageLocator);
+
 
     /**
      * 清除所有消息(离线恢复),并等待刷新
@@ -100,5 +107,10 @@ public interface ChatView extends MvpView {
      */
     void showDraft(TIMMessageDraft draft);
 
+
+    /**
+     * 显示toast
+     */
+    void showToast(String msg);
 
 }

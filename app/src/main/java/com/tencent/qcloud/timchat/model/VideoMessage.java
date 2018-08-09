@@ -64,6 +64,8 @@ public class VideoMessage extends Message {
     @Override
     public void showMessage(final ChatAdapter.ViewHolder viewHolder, final Context context) {
         clearView(viewHolder);
+        if (checkRevoke(viewHolder)) return;
+
         final TIMVideoElem e = (TIMVideoElem) message.getElement(0);
         switch (message.status()) {
             case Sending:
@@ -113,6 +115,10 @@ public class VideoMessage extends Message {
      */
     @Override
     public String getSummary() {
+
+        String str = getRevokeSummary();
+        if (str != null) return str;
+
         return MyApplication.getContext().getString(R.string.summary_video);
     }
 

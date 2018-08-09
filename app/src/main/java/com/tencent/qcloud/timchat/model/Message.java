@@ -1,10 +1,9 @@
 package com.tencent.qcloud.timchat.model;
 
 import android.content.Context;
-import android.util.Log;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.tencent.TIMConversationType;
 import com.tencent.TIMMessage;
@@ -18,6 +17,9 @@ import com.tencent.qcloud.timchat.utils.TimeUtil;
 public abstract class Message {
 
     protected final String TAG = "Message";
+
+    private String msg_summary_revoke_by_self = "你的一条消息被撤回了";
+    private String msg_summary_revoke_by_other = "'%1$s'的一条消息被撤回了";
 
     TIMMessage message;
 
@@ -109,7 +111,51 @@ public abstract class Message {
     /**
      * 获取消息摘要
      */
-    public abstract String getSummary();
+    public String getSummary() {
+
+        if (message.status() == TIMMessageStatus.HasRevoked) {
+            String text = msg_summary_revoke_by_self;
+            if (!message.isSelf()) {
+                String sender = getSender();
+                if (message.getSenderProfile() != null && !TextUtils.isEmpty(message.getSenderProfile().getNickName())) {
+                    sender = message.getSenderProfile().getNickName();
+                }
+                text = String.format(msg_summary_revoke_by_other, sender);
+            }
+
+            return text;
+        }
+        return null;
+    }
+
+
+    String getRevokeSummary() {
+        String revoke_by_self = "你撤回了一条消息";
+        String revoke_by_other = "'%1$s'撤回了一条消息";
+        if (message.status() == TIMMessageStatus.HasRevoked) {
+            if (message.isSelf()) {
+                return revoke_by_self;
+            }
+
+            return String.format(revoke_by_other, message.getSender());
+        }
+        return null;
+    }
+
+    /**
+     * 显示撤回的消息
+     */
+    boolean checkRevoke(ChatAdapter.ViewHolder viewHolder) {
+        if (message.status() == TIMMessageStatus.HasRevoked) {
+            viewHolder.leftPanel.setVisibility(View.GONE);
+            viewHolder.rightPanel.setVisibility(View.GONE);
+            viewHolder.systemMessage.setVisibility(View.VISIBLE);
+            viewHolder.systemMessage.setText(getSummary());
+            return true;
+        }
+        return false;
+    }
+
 
     /**
      * 保存消息或消息文件

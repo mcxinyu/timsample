@@ -15,10 +15,6 @@ import com.tencent.qcloud.timchat.R;
 import com.tencent.qcloud.timchat.adapters.ChatAdapter;
 import com.tencent.qcloud.timchat.utils.FileUtil;
 
-import java.io.File;
-
-import static com.tencent.TIMElemType.File;
-
 /**
  * 文件消息
  */
@@ -46,7 +42,11 @@ public class FileMessage extends Message {
      */
     @Override
     public void showMessage(ChatAdapter.ViewHolder viewHolder, Context context) {
+
         clearView(viewHolder);
+
+        if (checkRevoke(viewHolder)) return;
+
         TIMFileElem e = (TIMFileElem) message.getElement(0);
         TextView tv = new TextView(MyApplication.getContext());
         tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
@@ -61,6 +61,9 @@ public class FileMessage extends Message {
      */
     @Override
     public String getSummary() {
+        String str = getRevokeSummary();
+        if (str != null) return str;
+
         return MyApplication.getContext().getString(R.string.summary_file);
     }
 

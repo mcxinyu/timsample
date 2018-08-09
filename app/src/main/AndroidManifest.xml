@@ -43,7 +43,7 @@
 
         <meta-data
             android:name="com.tencent.rdm.uuid"
-            android:value="731397eb-f8e1-4e29-bd4f-e578f8135acd" />
+            android:value="3e20b7cc-0fa4-45b9-a3bd-c1c744eaa4b2" />
 
         <activity
             android:name=".ui.SplashActivity"
@@ -218,13 +218,16 @@
         <!-- hwpush -->
 
         <!-- firebase -->
-        <!--<service android:name="com.tencent.qcloud.timchat.utils.MyFirebaseInstanceIDService" android:exported="true">-->
+        <service
+            android:name="com.tencent.qcloud.timchat.utils.MyFirebaseInstanceIDService"
+            android:exported="true">
 
-        <!--<intent-filter>-->
-        <!--<action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>-->
-        <!--</intent-filter>-->
-        <!--</service>-->
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
         <!-- firebase -->
+
 
 
         <!--mz push-->
@@ -240,7 +243,6 @@
                 <!-- 兼容低版本Flyme3推送服务配置 -->
                 <action android:name="com.meizu.c2dm.intent.REGISTRATION" />
                 <action android:name="com.meizu.c2dm.intent.RECEIVE" />
-
                 <category android:name="com.tencent.qcloud.timchat"></category>
             </intent-filter>
         </receiver>

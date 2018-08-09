@@ -67,6 +67,9 @@ public class ImageMessage extends Message {
     @Override
     public void showMessage(final ChatAdapter.ViewHolder viewHolder, final Context context) {
         clearView(viewHolder);
+
+        if (checkRevoke(viewHolder)) return;
+
         TIMImageElem e = (TIMImageElem) message.getElement(0);
         switch (message.status()) {
             case Sending:
@@ -113,8 +116,6 @@ public class ImageMessage extends Message {
                 break;
         }
         showStatus(viewHolder);
-
-
     }
 
     /**
@@ -122,6 +123,9 @@ public class ImageMessage extends Message {
      */
     @Override
     public String getSummary() {
+        String str = getRevokeSummary();
+        if (str != null) return str;
+
         return MyApplication.getContext().getString(R.string.summary_image);
     }
 

@@ -6,7 +6,6 @@ import android.view.View;
 import com.tencent.TIMGroupMemberInfo;
 import com.tencent.TIMGroupTipsElem;
 import com.tencent.TIMMessage;
-import com.tencent.TIMUserProfile;
 import com.tencent.qcloud.timchat.MyApplication;
 import com.tencent.qcloud.timchat.R;
 import com.tencent.qcloud.timchat.adapters.ChatAdapter;
@@ -44,6 +43,10 @@ public class GroupTipMessage extends Message {
      */
     @Override
     public String getSummary() {
+
+        String str = getRevokeSummary();
+        if (str != null) return str;
+
         final TIMGroupTipsElem e = (TIMGroupTipsElem) message.getElement(0);
         StringBuilder stringBuilder = new StringBuilder();
         Iterator<Map.Entry<String, TIMGroupMemberInfo>> iterator = e.getChangedGroupMemberInfo().entrySet().iterator();

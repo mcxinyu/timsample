@@ -1,15 +1,12 @@
 package com.tencent.qcloud.presentation.presenter;
 
-import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.tencent.TIMConversation;
 import com.tencent.TIMConversationType;
-import com.tencent.TIMElem;
 import com.tencent.TIMGroupCacheInfo;
 import com.tencent.TIMManager;
 import com.tencent.TIMMessage;
-import com.tencent.TIMMessageDraft;
 import com.tencent.TIMValueCallBack;
 import com.tencent.qcloud.presentation.event.FriendshipEvent;
 import com.tencent.qcloud.presentation.event.GroupEvent;
@@ -44,9 +41,12 @@ public class ConversationPresenter implements Observer {
 
     @Override
     public void update(Observable observable, Object data) {
+
         if (observable instanceof MessageEvent) {
-            TIMMessage msg = (TIMMessage) data;
-            view.updateMessage(msg);
+            if (data instanceof TIMMessage) {
+                TIMMessage msg = (TIMMessage) data;
+                view.updateMessage(msg);
+            }
         } else if (observable instanceof FriendshipEvent) {
             FriendshipEvent.NotifyCmd cmd = (FriendshipEvent.NotifyCmd) data;
             switch (cmd.type) {

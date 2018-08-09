@@ -3,18 +3,18 @@ package com.tencent.qcloud.presentation.presenter;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.tencent.TIMCallBack;
 import com.tencent.TIMConversation;
 import com.tencent.TIMConversationType;
-import com.tencent.TIMElem;
 import com.tencent.TIMManager;
 import com.tencent.TIMMessage;
 import com.tencent.TIMMessageDraft;
+import com.tencent.TIMMessageLocator;
 import com.tencent.TIMValueCallBack;
 import com.tencent.qcloud.presentation.event.MessageEvent;
 import com.tencent.qcloud.presentation.event.RefreshEvent;
 import com.tencent.qcloud.presentation.viewfeatures.ChatView;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -123,12 +123,18 @@ public class ChatPresenter implements Observer {
     @Override
     public void update(Observable observable, Object data) {
         if (observable instanceof MessageEvent) {
-            TIMMessage msg = (TIMMessage) data;
-            if (msg == null || msg.getConversation().getPeer().equals(conversation.getPeer()) && msg.getConversation().getType() == conversation.getType()) {
-                view.showMessage(msg);
-                //当前聊天界面已读上报，用于多终端登录时未读消息数同步
-                readMessages();
+            if (data instanceof TIMMessage || data == null) {
+                TIMMessage msg = (TIMMessage) data;
+                if (msg == null || msg.getConversation().getPeer().equals(conversation.getPeer()) && msg.getConversation().getType() == conversation.getType()) {
+                    view.showMessage(msg);
+                    //当前聊天界面已读上报，用于多终端登录时未读消息数同步
+                    readMessages();
+                }
+            } else if (data instanceof TIMMessageLocator) {
+                TIMMessageLocator msg = (TIMMessageLocator) data;
+                view.showRevokeMessage(msg);
             }
+
         } else if (observable instanceof RefreshEvent) {
             view.clearAllMessage();
             getMessage(null);
@@ -184,6 +190,28 @@ public class ChatPresenter implements Observer {
             conversation.setDraft(draft);
         }
 
+    }
+
+
+    /**
+     * 消息撤回
+     *
+     * @param message 要撤回的消息
+     */
+    public void revokeMessage(final TIMMessage message) {
+        conversation.revokeMessage(message, new TIMCallBack() {
+            @Override
+            public void onError(int i, String s) {
+                Log.d(TAG, "revoke error " + i);
+                view.showToast("revoke error " + s);
+            }
+
+            @Override
+            public void onSuccess() {
+                Log.d(TAG, "revoke success");
+                MessageEvent.getInstance().onNewMessage(null);
+            }
+        });
     }
 
 

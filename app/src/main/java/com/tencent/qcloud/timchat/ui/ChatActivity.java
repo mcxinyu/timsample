@@ -21,6 +21,7 @@ import android.widget.Toast;
 import com.tencent.TIMConversationType;
 import com.tencent.TIMMessage;
 import com.tencent.TIMMessageDraft;
+import com.tencent.TIMMessageLocator;
 import com.tencent.TIMMessageStatus;
 import com.tencent.qcloud.presentation.presenter.ChatPresenter;
 import com.tencent.qcloud.presentation.viewfeatures.ChatView;
@@ -424,6 +425,9 @@ public class ChatActivity extends FragmentActivity implements ChatView {
         if (message instanceof ImageMessage || message instanceof FileMessage) {
             menu.add(0, 3, Menu.NONE, getString(R.string.chat_save));
         }
+        if (message.isSelf()) {
+            menu.add(0, 4, Menu.NONE, getString(R.string.chat_revoke));
+        }
     }
 
 
@@ -444,6 +448,8 @@ public class ChatActivity extends FragmentActivity implements ChatView {
             case 3:
                 message.save();
                 break;
+            case 4:
+                presenter.revokeMessage(message.getMessage());
             default:
                 break;
         }
@@ -520,6 +526,21 @@ public class ChatActivity extends FragmentActivity implements ChatView {
             title.setTitleText(titleStr);
         }
     };
+
+
+    @Override
+    public void showToast(String msg) {
+        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void showRevokeMessage(TIMMessageLocator timMessageLocator) {
+        for (Message msg : messageList) {
+            if (msg.getMessage().checkEquals(timMessageLocator)) {
+                adapter.notifyDataSetChanged();
+            }
+        }
+    }
 
 
 }

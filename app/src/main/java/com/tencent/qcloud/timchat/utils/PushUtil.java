@@ -98,9 +98,11 @@ public class PushUtil implements Observer {
     @Override
     public void update(Observable observable, Object data) {
         if (observable instanceof MessageEvent) {
-            TIMMessage msg = (TIMMessage) data;
-            if (msg != null) {
-                PushNotify(msg);
+            if (data instanceof TIMMessage) {
+                TIMMessage msg = (TIMMessage) data;
+                if (msg != null) {
+                    PushNotify(msg);
+                }
             }
         }
     }

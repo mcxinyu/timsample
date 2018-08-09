@@ -16,7 +16,6 @@ import com.tencent.qcloud.timchat.R;
 import com.tencent.qcloud.ui.TemplateTitle;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class ImagePreviewActivity extends Activity {

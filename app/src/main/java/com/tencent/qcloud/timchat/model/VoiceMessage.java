@@ -2,7 +2,6 @@ package com.tencent.qcloud.timchat.model;
 
 import android.content.Context;
 import android.graphics.drawable.AnimationDrawable;
-import android.media.MediaPlayer;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -73,6 +72,9 @@ public class VoiceMessage extends Message {
      */
     @Override
     public void showMessage(ChatAdapter.ViewHolder viewHolder, Context context) {
+
+        if (checkRevoke(viewHolder)) return;
+
         LinearLayout linearLayout = new LinearLayout(MyApplication.getContext());
         linearLayout.setOrientation(LinearLayout.HORIZONTAL);
         linearLayout.setGravity(Gravity.CENTER);
@@ -111,6 +113,7 @@ public class VoiceMessage extends Message {
             }
         });
         showStatus(viewHolder);
+
     }
 
 
@@ -119,6 +122,9 @@ public class VoiceMessage extends Message {
      */
     @Override
     public String getSummary() {
+        String str = getRevokeSummary();
+        if (str != null) return str;
+
         return MyApplication.getContext().getString(R.string.summary_voice);
     }
 
